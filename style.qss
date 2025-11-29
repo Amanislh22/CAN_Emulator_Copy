@@ -1,0 +1,135 @@
+/* =========================================================
+   GLOBAL STYLE — Modern Soft Theme (Soft Blue / Red)
+   ========================================================= */
+
+QMainWindow {
+    background-color: #f6f7f9;
+    border: none;
+    font-family: "Segoe UI", "Roboto", sans-serif;
+    color: #2e3440;
+}
+
+/* Sidebar Frame */
+#sidebarFrame {
+    background-color: #2f3640;
+    border-right: 1px solid #444;
+}
+
+/* Sidebar Buttons */
+#sidebarFrame QPushButton {
+    background-color: transparent;
+    color: #dcdde1;
+    border: none;
+    padding: 10px;
+    text-align: left;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+#sidebarFrame QPushButton:hover {
+    background-color: #596275;
+    color: #ffffff;
+}
+
+#sidebarFrame QPushButton:pressed {
+    background-color: #5fa8d3; /* soft sky blue */
+    color: white;
+}
+
+/* Toggle Sidebar Button */
+#toggleSidebarButton {
+    background-color: #82c0e9;  /* soft blue */
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 4px;
+}
+#toggleSidebarButton:hover {
+    background-color: #5fa8d3;
+}
+
+/* Labels (Titles / Subtitles) */
+QLabel#titleWelcome {
+    color: #2e3440;
+    font-weight: bold;
+}
+
+QLabel#subtitleWelcome {
+    color: #70798c;
+    font-style: italic;
+}
+
+/* Combo Boxes */
+QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #cfd3d8;
+    border-radius: 6px;
+    padding: 5px 10px;
+    min-width: 100px;
+}
+QComboBox:hover {
+    border-color: #5fa8d3;
+}
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+/* Primary Buttons (Soft Blue) */
+QPushButton {
+    background-color: #5fa8d3;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #82c0e9;
+}
+QPushButton:pressed {
+    background-color: #4f98c2;
+}
+QPushButton:disabled {
+    background-color: #b2bec3;
+    color: #f0f0f0;
+}
+
+/* Secondary buttons (Disconnect - Soft Red) */
+#disconnectButton {
+    background-color: #e57373;   /* soft red */
+}
+#disconnectButton:hover {
+    background-color: #ef9a9a;   /* lighter red */
+}
+#disconnectButton:pressed {
+    background-color: #d55b5b;   /* deeper red */
+}
+
+/* Status bar */
+QStatusBar {
+    background-color: #eaecef;
+    border-top: 1px solid #cfd3d8;
+    color: #2e3440;
+    font-size: 12px;
+}
+
+QComboBox {
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px; /* leave space for arrow */
+    min-width: 6em;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/down.png);
+    width: 16px;
+    height: 16px;
+}
+
+
