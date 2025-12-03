@@ -1,6 +1,6 @@
-#include "homewindow.h";
-#include "./ui_homewindow.h";
-#include "mainwindow.h";
+#include "homewindow.h"
+#include "./ui_homewindow.h"
+#include "mainwindow.h"
 
 #include <QPropertyAnimation>
 #include <QSerialPortInfo>
@@ -55,12 +55,12 @@ HomeWindow::HomeWindow(QWidget *parent)
     // ------------------------------
     // Connect/Disconnect buttons
     // ------------------------------
-    // connect(ui->connectButton, &QPushButton::clicked, this, &HomeWindow::connectSerial);
-    // connect(ui->disconnectButton, &QPushButton::clicked, this, &HomeWindow::disconnectSerial);
+     connect(ui->connectButton, &QPushButton::clicked, this, &HomeWindow::connectSerial);
+     connect(ui->disconnectButton, &QPushButton::clicked, this, &HomeWindow::disconnectSerial);
 
     // Test buttons (for design)
-    connect(ui->connectButton, &QPushButton::clicked, this, &HomeWindow::testConnect);
-    connect(ui->disconnectButton, &QPushButton::clicked, this, &HomeWindow::testDisconnect);
+    //connect(ui->connectButton, &QPushButton::clicked, this, &HomeWindow::testConnect);
+    //connect(ui->disconnectButton, &QPushButton::clicked, this, &HomeWindow::testDisconnect);
 
     // Initially disable disconnect button
     ui->disconnectButton->setEnabled(false);
@@ -163,13 +163,17 @@ void HomeWindow::connectSerial()
         statusBar()->showMessage("Connected to " + portName);
 
         // Update label
-        ui->statusLabel->setText("🟢 Status: Connected");
+        ui->statusLabel->setText("🔵 Status: Connected");
         ui->statusLabel->setStyleSheet("color: #82C0E9; font-weight: bold; font-size: 14px;");
 
         // Enable/disable buttons
         ui->connectButton->setEnabled(false);
         ui->disconnectButton->setEnabled(true);
         ui->disconnectButton->setStyleSheet("");
+
+        if (monitorPage)
+            monitorPage->updateSerialStatus();
+
     } else {
         statusBar()->setStyleSheet("color: red;");
         statusBar()->showMessage("Connection Failed: " + serial->errorString());
@@ -201,6 +205,10 @@ void HomeWindow::disconnectSerial()
         ui->connectButton->setEnabled(true);
         ui->disconnectButton->setEnabled(false);
         ui->disconnectButton->setStyleSheet("background-color: #cccccc; color: #666666;");
+
+        if (monitorPage)
+            monitorPage->updateSerialStatus();
+
     }
 }
 
@@ -216,7 +224,7 @@ void HomeWindow::testConnect()
     ui->disconnectButton->setStyleSheet("");
 
     // Update status label
-    ui->statusLabel->setText("🔵 Status: Connected");
+    ui->statusLabel->setText("🔵 🔵 Status: Connected");
     ui->statusLabel->setStyleSheet("color: #82C0E9; font-weight: bold; font-size: 14px;");
 }
 
@@ -229,7 +237,7 @@ void HomeWindow::testDisconnect()
     ui->disconnectButton->setStyleSheet("background-color: #cccccc; color: #666666;");
 
     // Update status label
-    ui->statusLabel->setText("🔴 Status: Disconnected");
+    ui->statusLabel->setText("🔴 🔴  Status: Disconnected");
     ui->statusLabel->setStyleSheet("color: #e57373; font-weight: bold; font-size: 14px;");
 }
 
@@ -252,7 +260,7 @@ void HomeWindow::showTransmitPage() {
 void HomeWindow::showMonitorPage()
 {
     if (!monitorPage) {
-        monitorPage = new MainWindow(this);
+        monitorPage = new MainWindow(this, serial);
         ui->stackedWidget->addWidget(monitorPage);
     }
     ui->stackedWidget->setCurrentWidget(monitorPage);

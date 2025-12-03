@@ -1,9 +1,28 @@
 #include "mainwindow.h"
 #include <QHeaderView>
-#include <QRandomGenerator>
+#include <QSerialPort>
+#include <QSerialPortInfo>
+#include <QTime>
+#include <QVector>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QComboBox>
+#include <QMessageBox>
+#include <algorithm>
+#include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
+// -------------------- CONSTRUCTOR --------------------
+MainWindow::MainWindow(QWidget *parent, QSerialPort* serialPort)
     : QMainWindow(parent)
+    , serial(serialPort)
     , isConnected(false)
     , busLoad(0.0)
     , errorCount(0)
@@ -11,18 +30,24 @@ MainWindow::MainWindow(QWidget *parent)
     setupUI();
     setDarkTheme();
 
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &MainWindow::simulateCANTraffic);
+    if (serial) {
+        connect(serial, &QSerialPort::readyRead, this, &MainWindow::handleSerialData);
+    }
+
+    // Initial status
+    updateSerialStatus();
 }
 
+// -------------------- DESTRUCTOR --------------------
 MainWindow::~MainWindow()
 {
 }
 
+// -------------------- SETUP UI --------------------
 void MainWindow::setupUI()
 {
     setWindowTitle("STM32 CAN Interface");
-    setMinimumSize(1400, 800);
+    setMinimumSize(1000, 700);
 
     QWidget *centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
@@ -62,6 +87,7 @@ void MainWindow::setupUI()
     mainLayout->addLayout(contentLayout);
 }
 
+// -------------------- DARK THEME --------------------
 void MainWindow::setDarkTheme()
 {
     setStyleSheet(R"(
@@ -155,6 +181,7 @@ void MainWindow::setDarkTheme()
     )");
 }
 
+// -------------------- STATUS BAR --------------------
 QWidget* MainWindow::createStatusBar()
 {
     QWidget *statusWidget = new QWidget();
@@ -183,18 +210,6 @@ QWidget* MainWindow::createStatusBar()
     errorValue = new QLabel("0");
     errorValue->setStyleSheet("color: #FBBF24;");
 
-    connectBtn = new QPushButton("Connect");
-    connectBtn->setMinimumWidth(120);
-    connectBtn->setStyleSheet(R"(
-        QPushButton {
-            background-color: #10B981;
-        }
-        QPushButton:hover {
-            background-color: #059669;
-        }
-    )");
-    connect(connectBtn, &QPushButton::clicked, this, &MainWindow::toggleConnection);
-
     layout->addWidget(statusIndicator);
     layout->addWidget(statusLabel);
     layout->addSpacing(30);
@@ -204,11 +219,11 @@ QWidget* MainWindow::createStatusBar()
     layout->addWidget(errorLabel);
     layout->addWidget(errorValue);
     layout->addStretch();
-    layout->addWidget(connectBtn);
 
     return statusWidget;
 }
 
+// -------------------- TRANSMIT PANEL --------------------
 QGroupBox* MainWindow::createTransmitPanel()
 {
     QGroupBox *group = new QGroupBox("📤 Transmit Frame");
@@ -217,7 +232,7 @@ QGroupBox* MainWindow::createTransmitPanel()
     QLabel *idLabel = new QLabel("CAN ID (Hex)");
     idLabel->setStyleSheet("font-weight: bold; margin-top: 10px;");
     canIdInput = new QLineEdit("0x123");
-
+    canIdInput->setEnabled(false);
     layout->addWidget(idLabel);
     layout->addWidget(canIdInput);
 
@@ -226,9 +241,20 @@ QGroupBox* MainWindow::createTransmitPanel()
     canDataInput = new QTextEdit();
     canDataInput->setPlainText("00 00 00 00 00 00 00 00");
     canDataInput->setMaximumHeight(100);
-
+    canDataInput->setEnabled(false);
     layout->addWidget(dataLabel);
     layout->addWidget(canDataInput);
+
+    QLabel *requestLabel = new QLabel("Request Type");
+    requestLabel->setStyleSheet("font-weight: bold; margin-top: 20px;");
+    layout->addWidget(requestLabel);
+
+    requestCombo = new QComboBox();
+    requestCombo->addItem("Select request...", 0);
+    requestCombo->addItem("SOC of Total Voltage / Current", 0x1900140);
+    requestCombo->addItem("Max/Min Cell Voltages", 0x1910140);
+    requestCombo->addItem("Max/Min Temperature", 0x1920140);
+    layout->addWidget(requestCombo);
 
     sendBtn = new QPushButton("📨 Send Frame");
     sendBtn->setEnabled(false);
@@ -240,7 +266,7 @@ QGroupBox* MainWindow::createTransmitPanel()
     layout->addWidget(filterLabel);
 
     filterCheckbox = new QCheckBox("Enable ID filter");
-    connect(filterCheckbox, &QCheckBox::stateChanged, this, &MainWindow::updateFilter);
+    connect(filterCheckbox, &QCheckBox::checkStateChanged, this, &MainWindow::updateFilter);
     layout->addWidget(filterCheckbox);
 
     filterInput = new QLineEdit();
@@ -250,10 +276,10 @@ QGroupBox* MainWindow::createTransmitPanel()
     layout->addWidget(filterInput);
 
     layout->addStretch();
-
     return group;
 }
 
+// -------------------- MONITOR PANEL (CORRECTION) --------------------
 QGroupBox* MainWindow::createMonitorPanel()
 {
     monitorGroup = new QGroupBox("📊 CAN Monitor (0 frames)");
@@ -279,131 +305,213 @@ QGroupBox* MainWindow::createMonitorPanel()
     table = new QTableWidget();
     table->setColumnCount(5);
     table->setHorizontalHeaderLabels({"Time", "Dir", "ID", "DLC", "Data"});
-    table->horizontalHeader()->setStretchLastSection(true);
-    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+
+    // ✅ CORRECTION: Meilleure configuration des colonnes
+    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents); // Time
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);            // Dir
+    table->horizontalHeader()->resizeSection(1, 60);
+    table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents); // ID
+    table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);            // DLC
+    table->horizontalHeader()->resizeSection(3, 60);
+    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);          // Data
+
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    layout->addWidget(table);
+    // ✅ CORRECTION: Activer le word wrap pour afficher le texte long
+    table->setWordWrap(true);
 
+    // ✅ CORRECTION: Permettre un défilement vertical fluide
+    table->verticalHeader()->setDefaultSectionSize(40); // Hauteur minimale par défaut
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    layout->addWidget(table);
     return monitorGroup;
 }
 
-void MainWindow::toggleConnection()
+// -------------------- SERIAL STATUS --------------------
+void MainWindow::updateSerialStatus()
 {
-    isConnected = !isConnected;
-
-    if (isConnected) {
+    if (serial && serial->isOpen()) {
+        isConnected = true;
         statusIndicator->setStyleSheet("color: #10B981; font-size: 20px;");
         statusLabel->setText("Connected");
-        connectBtn->setText("Disconnect");
-        connectBtn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #EF4444;
-                min-width: 120px;
-            }
-            QPushButton:hover {
-                background-color: #DC2626;
-            }
-        )");
         sendBtn->setEnabled(true);
-        busLoad = 15.0;
-        timer->start(1000);
     } else {
+        isConnected = false;
         statusIndicator->setStyleSheet("color: #EF4444; font-size: 20px;");
         statusLabel->setText("Disconnected");
-        connectBtn->setText("Connect");
-        connectBtn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #10B981;
-                min-width: 120px;
-            }
-            QPushButton:hover {
-                background-color: #059669;
-            }
-        )");
         sendBtn->setEnabled(false);
-        timer->stop();
-        busLoad = 0.0;
     }
-
     updateStatus();
+}
+
+// -------------------- SEND FRAME --------------------
+QByteArray MainWindow::buildPayload()
+{
+    QByteArray frame(8, 0x00); // 8 bytes reserved
+    return frame;
 }
 
 void MainWindow::sendFrame()
 {
     if (!isConnected) return;
 
+    quint32 canId = requestCombo->currentData().toUInt();
+    if (canId == 0) {
+        QMessageBox::warning(this, "Request Type", "Please select a request type!");
+        return;
+    }
+
+    // Build payload for table only (display purpose)
+    QByteArray payload(8, 0x00); // 8 bytes reserved
+
+    // Send only CAN ID via UART
+    if (serial && serial->isOpen()) {
+        QByteArray packet;
+        packet.append((canId >> 24) & 0xFF);
+        packet.append((canId >> 16) & 0xFF);
+        packet.append((canId >> 8) & 0xFF);
+        packet.append(canId & 0xFF);
+
+        serial->write(packet);
+        serial->flush();
+
+        // Log sent CAN ID
+        qDebug() << "Sent CAN ID to UART:" << QString("0x%1").arg(canId, 7, 16, QChar('0')).toUpper();
+        qDebug() << "Raw bytes:" << packet.toHex(' ').toUpper();
+    }
+
+    // Update table with CAN ID + display payload
     CANFrame frame;
     frame.timestamp = QTime::currentTime().toString("HH:mm:ss.zzz");
-    frame.canId = canIdInput->text();
-    frame.data = canDataInput->toPlainText();
-    frame.dlc = frame.data.split(' ', Qt::SkipEmptyParts).size();
+    frame.canId = QString("0x%1").arg(canId, 7, 16, QChar('0')).toUpper();
+    frame.data = payload.toHex(' ').toUpper(); // Keep display payload
+    frame.dlc = payload.size();
     frame.direction = "TX";
 
     canFrames.prepend(frame);
-
-    if (canFrames.size() > 50) {
+    if (canFrames.size() > 50)
         canFrames.resize(50);
-    }
 
     updateTable();
 }
 
+
+// -------------------- CLEAR FRAMES --------------------
 void MainWindow::clearFrames()
 {
     canFrames.clear();
     updateTable();
 }
 
-void MainWindow::updateFilter()
+// -------------------- FILTER --------------------
+void MainWindow::updateFilter(Qt::CheckState)
 {
     filterInput->setEnabled(filterCheckbox->isChecked());
     updateTable();
 }
 
-void MainWindow::simulateCANTraffic()
+// -------------------- SERIAL DATA --------------------
+void MainWindow::handleSerialData()
 {
-    QStringList ids = {"0x100", "0x123", "0x200", "0x456"};
-    QString randomId = ids[QRandomGenerator::global()->bounded(ids.size())];
+    if (!serial) return;
 
-    QStringList dataBytes;
-    for (int i = 0; i < 8; i++) {
-        int byte = QRandomGenerator::global()->bounded(256);
-        dataBytes << QString("%1").arg(byte, 2, 16, QChar('0')).toUpper();
+    // ✅ CORRECTION: Accumuler les données dans un buffer
+    static QByteArray serialBuffer;
+    serialBuffer.append(serial->readAll());
+
+    // 🔍 DEBUG: Afficher les données brutes reçues
+    qDebug() << "========== NEW SERIAL DATA ==========";
+    qDebug() << "Buffer size:" << serialBuffer.size() << "bytes";
+    qDebug() << "Buffer content:" << QString(serialBuffer);
+
+    // ✅ CORRECTION: Traiter uniquement les lignes complètes (terminées par \n ou \r\n)
+    int newlinePos;
+    while ((newlinePos = serialBuffer.indexOf('\n')) != -1)
+    {
+        // Extraire une ligne complète
+        QByteArray lineData = serialBuffer.left(newlinePos);
+        serialBuffer.remove(0, newlinePos + 1);
+
+        QString line = QString::fromUtf8(lineData).trimmed();
+
+        // 🔍 DEBUG: Afficher la ligne traitée
+        qDebug() << "Processing line:" << line;
+        qDebug() << "Line length:" << line.length();
+
+        // ✅ Ignorer les lignes vides
+        if (line.isEmpty()) {
+            qDebug() << "⚠️ Skipping empty line";
+            continue;
+        }
+
+        // ✅ CORRECTION: Vérifier si la ligne commence par [ID 0x
+        if (!line.startsWith("[ID 0x")) {
+            qDebug() << "⚠️ Line doesn't start with '[ID 0x' - skipping";
+            continue;
+        }
+
+        // ✅ Créer une nouvelle trame CAN
+        CANFrame frame;
+        frame.timestamp = QTime::currentTime().toString("HH:mm:ss.zzz");
+        frame.direction = "RX";
+
+        // ✅ CORRECTION: Extraire le CAN ID
+        int idStart = line.indexOf("0x");
+        int idEnd = line.indexOf("]", idStart);
+
+        if (idStart == -1 || idEnd == -1) {
+            qDebug() << "❌ Failed to extract CAN ID - malformed line";
+            continue;
+        }
+
+        frame.canId = line.mid(idStart, idEnd - idStart).toUpper();
+        qDebug() << "✅ Extracted CAN ID:" << frame.canId;
+
+        // ✅ CORRECTION: Extraire les données après le ']'
+        int dataStart = idEnd + 1;
+        if (dataStart < line.length()) {
+            frame.data = line.mid(dataStart).trimmed();
+            qDebug() << "✅ Extracted data:" << frame.data;
+        } else {
+            frame.data = "No data";
+            qDebug() << "⚠️ No data after ] - setting to 'No data'";
+        }
+
+        // ✅ DLC = longueur du texte formaté
+        frame.dlc = frame.data.length();
+
+        // 🔍 DEBUG: Afficher la trame complète
+        qDebug() << "📦 Complete Frame:";
+        qDebug() << "  Timestamp:" << frame.timestamp;
+        qDebug() << "  Direction:" << frame.direction;
+        qDebug() << "  CAN ID:" << frame.canId;
+        qDebug() << "  Data:" << frame.data;
+        qDebug() << "  DLC:" << frame.dlc;
+
+        // ✅ Ajouter la trame à la liste
+        canFrames.prepend(frame);
+        if (canFrames.size() > 50)
+            canFrames.resize(50);
+
+        qDebug() << "✅ Frame added. Total frames:" << canFrames.size();
     }
 
-    CANFrame frame;
-    frame.timestamp = QTime::currentTime().toString("HH:mm:ss.zzz");
-    frame.canId = randomId;
-    frame.data = dataBytes.join(' ');
-    frame.dlc = 8;
-    frame.direction = "RX";
+    qDebug() << "========== END SERIAL DATA ==========";
+    qDebug() << "Remaining buffer size:" << serialBuffer.size();
+    qDebug() << "";
 
-    canFrames.prepend(frame);
-
-    if (canFrames.size() > 50) {
-        canFrames.resize(50);
-    }
-
-    busLoad = qMin(95.0, busLoad + QRandomGenerator::global()->generateDouble() * 5.0);
-    updateStatus();
+    // ✅ Mettre à jour le tableau
     updateTable();
 }
 
-void MainWindow::updateStatus()
-{
-    busLoadValue->setText(QString("%1%").arg(busLoad, 0, 'f', 1));
-    errorValue->setText(QString::number(errorCount));
-}
-
+// -------------------- UPDATE TABLE (CORRECTION) --------------------
 void MainWindow::updateTable()
 {
     QVector<CANFrame> frames = canFrames;
 
+    // Appliquer le filtre si activé
     if (filterCheckbox->isChecked() && !filterInput->text().isEmpty()) {
         QString filterText = filterInput->text().toLower();
         frames.erase(std::remove_if(frames.begin(), frames.end(),
@@ -412,28 +520,63 @@ void MainWindow::updateTable()
                                     }), frames.end());
     }
 
+    // Mettre à jour le titre du groupe
     monitorGroup->setTitle(QString("📊 CAN Monitor (%1 frames)").arg(frames.size()));
 
+    // ✅ CORRECTION: Définir le nombre de lignes
     table->setRowCount(frames.size());
 
+    // ✅ CORRECTION: Remplir le tableau
     for (int row = 0; row < frames.size(); row++) {
         const CANFrame& frame = frames[row];
 
-        table->setItem(row, 0, new QTableWidgetItem(frame.timestamp));
+        // Colonne 0: Timestamp
+        QTableWidgetItem *timeItem = new QTableWidgetItem(frame.timestamp);
+        timeItem->setTextAlignment(Qt::AlignCenter);
+        table->setItem(row, 0, timeItem);
 
+        // Colonne 1: Direction (TX/RX)
         QTableWidgetItem *dirItem = new QTableWidgetItem(frame.direction);
-        if (frame.direction == "TX") {
-            dirItem->setForeground(QColor("#60A5FA"));
-        } else {
-            dirItem->setForeground(QColor("#34D399"));
-        }
+        dirItem->setTextAlignment(Qt::AlignCenter);
+        dirItem->setForeground(frame.direction == "TX" ? QColor("#60A5FA") : QColor("#34D399"));
         table->setItem(row, 1, dirItem);
 
+        // Colonne 2: CAN ID
         QTableWidgetItem *idItem = new QTableWidgetItem(frame.canId);
+        idItem->setTextAlignment(Qt::AlignCenter);
         idItem->setForeground(QColor("#FBBF24"));
         table->setItem(row, 2, idItem);
 
-        table->setItem(row, 3, new QTableWidgetItem(QString::number(frame.dlc)));
-        table->setItem(row, 4, new QTableWidgetItem(frame.data));
+        // Colonne 3: DLC
+        QTableWidgetItem *dlcItem;
+        if (frame.direction == "RX") {
+            dlcItem = new QTableWidgetItem("N/A");
+        } else {
+            dlcItem = new QTableWidgetItem(QString::number(frame.dlc));
+        }
+        dlcItem->setTextAlignment(Qt::AlignCenter);
+        table->setItem(row, 3, dlcItem);
+
+        // ✅ CORRECTION: Colonne 4: Data (avec support pour texte long)
+        QTableWidgetItem *dataItem = new QTableWidgetItem(frame.data);
+        dataItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+        // ✅ IMPORTANT: Définir des flags pour permettre l'affichage de texte long
+        dataItem->setFlags(dataItem->flags() & ~Qt::ItemIsEditable);
+
+        table->setItem(row, 4, dataItem);
     }
+
+    // ✅ CORRECTION: Ajuster automatiquement la hauteur des lignes
+    table->resizeRowsToContents();
+
+    // ✅ OPTIONNEL: S'assurer que la colonne Data est assez large
+    table->resizeColumnToContents(4);
+}
+
+// -------------------- UPDATE STATUS --------------------
+void MainWindow::updateStatus()
+{
+    busLoadValue->setText(QString("%1%").arg(busLoad, 0, 'f', 1));
+    errorValue->setText(QString::number(errorCount));
 }

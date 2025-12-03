@@ -121,16 +121,16 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="homePage">
        <widget class="QLabel" name="titleWelcome">
         <property name="geometry">
          <rect>
-          <x>180</x>
-          <y>60</y>
-          <width>501</width>
-          <height>91</height>
+          <x>80</x>
+          <y>70</y>
+          <width>561</width>
+          <height>111</height>
          </rect>
         </property>
         <property name="font">
@@ -149,8 +149,8 @@
        <widget class="QLabel" name="subtitleWelcome">
         <property name="geometry">
          <rect>
-          <x>230</x>
-          <y>140</y>
+          <x>160</x>
+          <y>180</y>
           <width>431</width>
           <height>61</height>
          </rect>
@@ -171,8 +171,8 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>560</x>
-          <y>250</y>
+          <x>490</x>
+          <y>280</y>
           <width>92</width>
           <height>67</height>
          </rect>
@@ -197,10 +197,10 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>210</x>
-          <y>470</y>
-          <width>481</width>
-          <height>31</height>
+          <x>100</x>
+          <y>410</y>
+          <width>551</width>
+          <height>61</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -230,8 +230,8 @@
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>240</x>
-          <y>280</y>
+          <x>170</x>
+          <y>310</y>
           <width>291</width>
           <height>30</height>
          </rect>

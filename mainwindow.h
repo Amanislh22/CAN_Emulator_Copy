@@ -15,6 +15,12 @@
 #include <QTimer>
 #include <QTime>
 #include <QVector>
+#include <QComboBox>
+
+#include <QSerialPort>
+#include <QSerialPortInfo>
+
+class QSerialPort;
 
 struct CANFrame {
     QString timestamp;
@@ -29,16 +35,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget* parent = nullptr, QSerialPort* serialPort = nullptr);
     ~MainWindow();
 
-private slots:
-    void toggleConnection();
+public slots:
     void sendFrame();
     void clearFrames();
-    void updateFilter();
-    void simulateCANTraffic();
+    void updateFilter(Qt::CheckState state);
+    void handleSerialData();
     void updateTable();
+    void updateSerialStatus();
 
 private:
     void setupUI();
@@ -47,13 +53,13 @@ private:
     QGroupBox* createTransmitPanel();
     QGroupBox* createMonitorPanel();
     void updateStatus();
+    QByteArray buildPayload(); // returns 8 reserved bytes for request
 
     // UI Components
     QLabel *statusIndicator;
     QLabel *statusLabel;
     QLabel *busLoadValue;
     QLabel *errorValue;
-    QPushButton *connectBtn;
     QPushButton *sendBtn;
     QLineEdit *canIdInput;
     QTextEdit *canDataInput;
@@ -62,12 +68,15 @@ private:
     QTableWidget *table;
     QGroupBox *monitorGroup;
     QTimer *timer;
+    QComboBox *requestCombo;
 
     // Data
     bool isConnected;
     QVector<CANFrame> canFrames;
     double busLoad;
     int errorCount;
+
+    QSerialPort* serial;
 };
 
 #endif // MAINWINDOW_H
