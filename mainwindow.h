@@ -41,7 +41,7 @@ public:
 public slots:
     void sendFrame();
     void clearFrames();
-    void updateFilter(Qt::CheckState state);
+    void updateFilter(int state);
     void handleSerialData();
     void updateTable();
     void updateSerialStatus();

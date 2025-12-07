@@ -178,6 +178,24 @@ void MainWindow::setDarkTheme()
             background-color: #3B82F6;
             border-color: #3B82F6;
         }
+        QComboBox {
+            background-color: #334155;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            padding: 8px;
+            color: #F1F5F9;
+        }
+        QComboBox:focus {
+            border: 2px solid #3B82F6;
+        }
+        QComboBox::drop-down {
+            border: none;
+        }
+        QComboBox QAbstractItemView {
+            background-color: #334155;
+            color: #F1F5F9;
+            selection-background-color: #3B82F6;
+        }
     )");
 }
 
@@ -229,24 +247,11 @@ QGroupBox* MainWindow::createTransmitPanel()
     QGroupBox *group = new QGroupBox("📤 Transmit Frame");
     QVBoxLayout *layout = new QVBoxLayout(group);
 
-    QLabel *idLabel = new QLabel("CAN ID (Hex)");
-    idLabel->setStyleSheet("font-weight: bold; margin-top: 10px;");
-    canIdInput = new QLineEdit("0x123");
-    canIdInput->setEnabled(false);
-    layout->addWidget(idLabel);
-    layout->addWidget(canIdInput);
-
-    QLabel *dataLabel = new QLabel("Data (Hex bytes)");
-    dataLabel->setStyleSheet("font-weight: bold; margin-top: 15px;");
-    canDataInput = new QTextEdit();
-    canDataInput->setPlainText("00 00 00 00 00 00 00 00");
-    canDataInput->setMaximumHeight(100);
-    canDataInput->setEnabled(false);
-    layout->addWidget(dataLabel);
-    layout->addWidget(canDataInput);
+    // Removed CAN ID input section
+    // Removed Data input section
 
     QLabel *requestLabel = new QLabel("Request Type");
-    requestLabel->setStyleSheet("font-weight: bold; margin-top: 20px;");
+    requestLabel->setStyleSheet("font-weight: bold; margin-top: 10px;");
     layout->addWidget(requestLabel);
 
     requestCombo = new QComboBox();
@@ -266,7 +271,7 @@ QGroupBox* MainWindow::createTransmitPanel()
     layout->addWidget(filterLabel);
 
     filterCheckbox = new QCheckBox("Enable ID filter");
-    connect(filterCheckbox, &QCheckBox::checkStateChanged, this, &MainWindow::updateFilter);
+    connect(filterCheckbox, &QCheckBox::stateChanged, this, &MainWindow::updateFilter);
     layout->addWidget(filterCheckbox);
 
     filterInput = new QLineEdit();
@@ -279,7 +284,7 @@ QGroupBox* MainWindow::createTransmitPanel()
     return group;
 }
 
-// -------------------- MONITOR PANEL (CORRECTION) --------------------
+// -------------------- MONITOR PANEL --------------------
 QGroupBox* MainWindow::createMonitorPanel()
 {
     monitorGroup = new QGroupBox("📊 CAN Monitor (0 frames)");
@@ -306,23 +311,18 @@ QGroupBox* MainWindow::createMonitorPanel()
     table->setColumnCount(5);
     table->setHorizontalHeaderLabels({"Time", "Dir", "ID", "DLC", "Data"});
 
-    // ✅ CORRECTION: Meilleure configuration des colonnes
-    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents); // Time
-    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);            // Dir
+    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
     table->horizontalHeader()->resizeSection(1, 60);
-    table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents); // ID
-    table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);            // DLC
+    table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
     table->horizontalHeader()->resizeSection(3, 60);
-    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);          // Data
+    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-    // ✅ CORRECTION: Activer le word wrap pour afficher le texte long
     table->setWordWrap(true);
-
-    // ✅ CORRECTION: Permettre un défilement vertical fluide
-    table->verticalHeader()->setDefaultSectionSize(40); // Hauteur minimale par défaut
+    table->verticalHeader()->setDefaultSectionSize(40);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     layout->addWidget(table);
@@ -349,7 +349,7 @@ void MainWindow::updateSerialStatus()
 // -------------------- SEND FRAME --------------------
 QByteArray MainWindow::buildPayload()
 {
-    QByteArray frame(8, 0x00); // 8 bytes reserved
+    QByteArray frame(8, 0x00);
     return frame;
 }
 
@@ -363,10 +363,8 @@ void MainWindow::sendFrame()
         return;
     }
 
-    // Build payload for table only (display purpose)
-    QByteArray payload(8, 0x00); // 8 bytes reserved
+    QByteArray payload(8, 0x00);
 
-    // Send only CAN ID via UART
     if (serial && serial->isOpen()) {
         QByteArray packet;
         packet.append((canId >> 24) & 0xFF);
@@ -377,16 +375,14 @@ void MainWindow::sendFrame()
         serial->write(packet);
         serial->flush();
 
-        // Log sent CAN ID
         qDebug() << "Sent CAN ID to UART:" << QString("0x%1").arg(canId, 7, 16, QChar('0')).toUpper();
         qDebug() << "Raw bytes:" << packet.toHex(' ').toUpper();
     }
 
-    // Update table with CAN ID + display payload
     CANFrame frame;
     frame.timestamp = QTime::currentTime().toString("HH:mm:ss.zzz");
     frame.canId = QString("0x%1").arg(canId, 7, 16, QChar('0')).toUpper();
-    frame.data = payload.toHex(' ').toUpper(); // Keep display payload
+    frame.data = payload.toHex(' ').toUpper();
     frame.dlc = payload.size();
     frame.direction = "TX";
 
@@ -397,7 +393,6 @@ void MainWindow::sendFrame()
     updateTable();
 }
 
-
 // -------------------- CLEAR FRAMES --------------------
 void MainWindow::clearFrames()
 {
@@ -406,7 +401,7 @@ void MainWindow::clearFrames()
 }
 
 // -------------------- FILTER --------------------
-void MainWindow::updateFilter(Qt::CheckState)
+void MainWindow::updateFilter(int)
 {
     filterInput->setEnabled(filterCheckbox->isChecked());
     updateTable();
@@ -417,47 +412,38 @@ void MainWindow::handleSerialData()
 {
     if (!serial) return;
 
-    // ✅ CORRECTION: Accumuler les données dans un buffer
     static QByteArray serialBuffer;
     serialBuffer.append(serial->readAll());
 
-    // 🔍 DEBUG: Afficher les données brutes reçues
     qDebug() << "========== NEW SERIAL DATA ==========";
     qDebug() << "Buffer size:" << serialBuffer.size() << "bytes";
     qDebug() << "Buffer content:" << QString(serialBuffer);
 
-    // ✅ CORRECTION: Traiter uniquement les lignes complètes (terminées par \n ou \r\n)
     int newlinePos;
     while ((newlinePos = serialBuffer.indexOf('\n')) != -1)
     {
-        // Extraire une ligne complète
         QByteArray lineData = serialBuffer.left(newlinePos);
         serialBuffer.remove(0, newlinePos + 1);
 
         QString line = QString::fromUtf8(lineData).trimmed();
 
-        // 🔍 DEBUG: Afficher la ligne traitée
         qDebug() << "Processing line:" << line;
         qDebug() << "Line length:" << line.length();
 
-        // ✅ Ignorer les lignes vides
         if (line.isEmpty()) {
             qDebug() << "⚠️ Skipping empty line";
             continue;
         }
 
-        // ✅ CORRECTION: Vérifier si la ligne commence par [ID 0x
         if (!line.startsWith("[ID 0x")) {
             qDebug() << "⚠️ Line doesn't start with '[ID 0x' - skipping";
             continue;
         }
 
-        // ✅ Créer une nouvelle trame CAN
         CANFrame frame;
         frame.timestamp = QTime::currentTime().toString("HH:mm:ss.zzz");
         frame.direction = "RX";
 
-        // ✅ CORRECTION: Extraire le CAN ID
         int idStart = line.indexOf("0x");
         int idEnd = line.indexOf("]", idStart);
 
@@ -469,7 +455,6 @@ void MainWindow::handleSerialData()
         frame.canId = line.mid(idStart, idEnd - idStart).toUpper();
         qDebug() << "✅ Extracted CAN ID:" << frame.canId;
 
-        // ✅ CORRECTION: Extraire les données après le ']'
         int dataStart = idEnd + 1;
         if (dataStart < line.length()) {
             frame.data = line.mid(dataStart).trimmed();
@@ -479,10 +464,8 @@ void MainWindow::handleSerialData()
             qDebug() << "⚠️ No data after ] - setting to 'No data'";
         }
 
-        // ✅ DLC = longueur du texte formaté
         frame.dlc = frame.data.length();
 
-        // 🔍 DEBUG: Afficher la trame complète
         qDebug() << "📦 Complete Frame:";
         qDebug() << "  Timestamp:" << frame.timestamp;
         qDebug() << "  Direction:" << frame.direction;
@@ -490,7 +473,6 @@ void MainWindow::handleSerialData()
         qDebug() << "  Data:" << frame.data;
         qDebug() << "  DLC:" << frame.dlc;
 
-        // ✅ Ajouter la trame à la liste
         canFrames.prepend(frame);
         if (canFrames.size() > 50)
             canFrames.resize(50);
@@ -502,16 +484,14 @@ void MainWindow::handleSerialData()
     qDebug() << "Remaining buffer size:" << serialBuffer.size();
     qDebug() << "";
 
-    // ✅ Mettre à jour le tableau
     updateTable();
 }
 
-// -------------------- UPDATE TABLE (CORRECTION) --------------------
+// -------------------- UPDATE TABLE --------------------
 void MainWindow::updateTable()
 {
     QVector<CANFrame> frames = canFrames;
 
-    // Appliquer le filtre si activé
     if (filterCheckbox->isChecked() && !filterInput->text().isEmpty()) {
         QString filterText = filterInput->text().toLower();
         frames.erase(std::remove_if(frames.begin(), frames.end(),
@@ -520,34 +500,27 @@ void MainWindow::updateTable()
                                     }), frames.end());
     }
 
-    // Mettre à jour le titre du groupe
     monitorGroup->setTitle(QString("📊 CAN Monitor (%1 frames)").arg(frames.size()));
 
-    // ✅ CORRECTION: Définir le nombre de lignes
     table->setRowCount(frames.size());
 
-    // ✅ CORRECTION: Remplir le tableau
     for (int row = 0; row < frames.size(); row++) {
         const CANFrame& frame = frames[row];
 
-        // Colonne 0: Timestamp
         QTableWidgetItem *timeItem = new QTableWidgetItem(frame.timestamp);
         timeItem->setTextAlignment(Qt::AlignCenter);
         table->setItem(row, 0, timeItem);
 
-        // Colonne 1: Direction (TX/RX)
         QTableWidgetItem *dirItem = new QTableWidgetItem(frame.direction);
         dirItem->setTextAlignment(Qt::AlignCenter);
         dirItem->setForeground(frame.direction == "TX" ? QColor("#60A5FA") : QColor("#34D399"));
         table->setItem(row, 1, dirItem);
 
-        // Colonne 2: CAN ID
         QTableWidgetItem *idItem = new QTableWidgetItem(frame.canId);
         idItem->setTextAlignment(Qt::AlignCenter);
         idItem->setForeground(QColor("#FBBF24"));
         table->setItem(row, 2, idItem);
 
-        // Colonne 3: DLC
         QTableWidgetItem *dlcItem;
         if (frame.direction == "RX") {
             dlcItem = new QTableWidgetItem("N/A");
@@ -557,20 +530,13 @@ void MainWindow::updateTable()
         dlcItem->setTextAlignment(Qt::AlignCenter);
         table->setItem(row, 3, dlcItem);
 
-        // ✅ CORRECTION: Colonne 4: Data (avec support pour texte long)
         QTableWidgetItem *dataItem = new QTableWidgetItem(frame.data);
         dataItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-        // ✅ IMPORTANT: Définir des flags pour permettre l'affichage de texte long
         dataItem->setFlags(dataItem->flags() & ~Qt::ItemIsEditable);
-
         table->setItem(row, 4, dataItem);
     }
 
-    // ✅ CORRECTION: Ajuster automatiquement la hauteur des lignes
     table->resizeRowsToContents();
-
-    // ✅ OPTIONNEL: S'assurer que la colonne Data est assez large
     table->resizeColumnToContents(4);
 }
 

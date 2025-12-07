@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ameni/CAN_Emulator
+CMAKE_SOURCE_DIR = /home/ameni/CAN_Emulator_Copy
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ameni/CAN_Emulator/build
+CMAKE_BINARY_DIR = /home/ameni/CAN_Emulator_Copy/build
 
 # Utility rule file for can_emulator_project_autogen.
 
@@ -67,8 +67,8 @@ include CMakeFiles/can_emulator_project_autogen.dir/compiler_depend.make
 include CMakeFiles/can_emulator_project_autogen.dir/progress.make
 
 CMakeFiles/can_emulator_project_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target can_emulator_project"
-	/usr/bin/cmake -E cmake_autogen /home/ameni/CAN_Emulator/build/CMakeFiles/can_emulator_project_autogen.dir/AutogenInfo.json ""
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ameni/CAN_Emulator_Copy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target can_emulator_project"
+	/usr/bin/cmake -E cmake_autogen /home/ameni/CAN_Emulator_Copy/build/CMakeFiles/can_emulator_project_autogen.dir/AutogenInfo.json ""
 
 can_emulator_project_autogen: CMakeFiles/can_emulator_project_autogen
 can_emulator_project_autogen: CMakeFiles/can_emulator_project_autogen.dir/build.make
@@ -83,6 +83,6 @@ CMakeFiles/can_emulator_project_autogen.dir/clean:
 .PHONY : CMakeFiles/can_emulator_project_autogen.dir/clean
 
 CMakeFiles/can_emulator_project_autogen.dir/depend:
-	cd /home/ameni/CAN_Emulator/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ameni/CAN_Emulator /home/ameni/CAN_Emulator /home/ameni/CAN_Emulator/build /home/ameni/CAN_Emulator/build /home/ameni/CAN_Emulator/build/CMakeFiles/can_emulator_project_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ameni/CAN_Emulator_Copy/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ameni/CAN_Emulator_Copy /home/ameni/CAN_Emulator_Copy /home/ameni/CAN_Emulator_Copy/build /home/ameni/CAN_Emulator_Copy/build /home/ameni/CAN_Emulator_Copy/build/CMakeFiles/can_emulator_project_autogen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/can_emulator_project_autogen.dir/depend
 

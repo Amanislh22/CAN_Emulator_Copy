@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'homewindow.ui'
 **
-** Created by: Qt User Interface Compiler version 6.2.4
+** Created by: Qt User Interface Compiler version 5.15.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -145,7 +145,7 @@ public:
         homePage->setObjectName(QString::fromUtf8("homePage"));
         titleWelcome = new QLabel(homePage);
         titleWelcome->setObjectName(QString::fromUtf8("titleWelcome"));
-        titleWelcome->setGeometry(QRect(180, 60, 501, 91));
+        titleWelcome->setGeometry(QRect(80, 70, 561, 111));
         QFont font2;
         font2.setPointSize(20);
         font2.setBold(true);
@@ -153,7 +153,7 @@ public:
         titleWelcome->setAlignment(Qt::AlignmentFlag::AlignCenter);
         subtitleWelcome = new QLabel(homePage);
         subtitleWelcome->setObjectName(QString::fromUtf8("subtitleWelcome"));
-        subtitleWelcome->setGeometry(QRect(230, 140, 431, 61));
+        subtitleWelcome->setGeometry(QRect(160, 180, 431, 61));
         QFont font3;
         font3.setPointSize(14);
         font3.setBold(true);
@@ -161,7 +161,7 @@ public:
         subtitleWelcome->setAlignment(Qt::AlignmentFlag::AlignCenter);
         layoutWidget = new QWidget(homePage);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(560, 250, 92, 67));
+        layoutWidget->setGeometry(QRect(490, 280, 92, 67));
         verticalLayout_2 = new QVBoxLayout(layoutWidget);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -177,7 +177,7 @@ public:
 
         layoutWidget1 = new QWidget(homePage);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(210, 470, 481, 31));
+        layoutWidget1->setGeometry(QRect(100, 410, 551, 61));
         horizontalLayout_2 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -198,7 +198,7 @@ public:
 
         layoutWidget2 = new QWidget(homePage);
         layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(240, 280, 291, 30));
+        layoutWidget2->setGeometry(QRect(170, 310, 291, 30));
         horizontalLayout_3 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
@@ -233,7 +233,7 @@ public:
 
         retranslateUi(HomeWindow);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(HomeWindow);

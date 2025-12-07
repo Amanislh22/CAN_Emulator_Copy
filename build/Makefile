@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ameni/CAN_Emulator
+CMAKE_SOURCE_DIR = /home/ameni/CAN_Emulator_Copy
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ameni/CAN_Emulator/build
+CMAKE_BINARY_DIR = /home/ameni/CAN_Emulator_Copy/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ameni/CAN_Emulator/build/CMakeFiles /home/ameni/CAN_Emulator/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ameni/CAN_Emulator_Copy/build/CMakeFiles /home/ameni/CAN_Emulator_Copy/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ameni/CAN_Emulator/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ameni/CAN_Emulator_Copy/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -186,30 +186,6 @@ can_emulator_project_autogen: cmake_check_build_system
 can_emulator_project_autogen/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/can_emulator_project_autogen.dir/build.make CMakeFiles/can_emulator_project_autogen.dir/build
 .PHONY : can_emulator_project_autogen/fast
-
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.o: can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o
-.PHONY : can_emulator_project_autogen/EWIEGA46WW/qrc_resources.o
-
-# target to build an object file
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/can_emulator_project.dir/build.make CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o
-.PHONY : can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o
-
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.i: can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i
-.PHONY : can_emulator_project_autogen/EWIEGA46WW/qrc_resources.i
-
-# target to preprocess a source file
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/can_emulator_project.dir/build.make CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i
-.PHONY : can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i
-
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.s: can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s
-.PHONY : can_emulator_project_autogen/EWIEGA46WW/qrc_resources.s
-
-# target to generate assembly for a file
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/can_emulator_project.dir/build.make CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s
-.PHONY : can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s
 
 can_emulator_project_autogen/mocs_compilation.o: can_emulator_project_autogen/mocs_compilation.cpp.o
 .PHONY : can_emulator_project_autogen/mocs_compilation.o
@@ -321,9 +297,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... can_emulator_project_autogen"
 	@echo "... can_emulator_project"
-	@echo "... can_emulator_project_autogen/EWIEGA46WW/qrc_resources.o"
-	@echo "... can_emulator_project_autogen/EWIEGA46WW/qrc_resources.i"
-	@echo "... can_emulator_project_autogen/EWIEGA46WW/qrc_resources.s"
 	@echo "... can_emulator_project_autogen/mocs_compilation.o"
 	@echo "... can_emulator_project_autogen/mocs_compilation.i"
 	@echo "... can_emulator_project_autogen/mocs_compilation.s"

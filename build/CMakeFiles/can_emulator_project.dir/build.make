@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ameni/CAN_Emulator
+CMAKE_SOURCE_DIR = /home/ameni/CAN_Emulator_Copy
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ameni/CAN_Emulator/build
+CMAKE_BINARY_DIR = /home/ameni/CAN_Emulator_Copy/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/can_emulator_project.dir/depend.make
@@ -69,91 +69,68 @@ include CMakeFiles/can_emulator_project.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/can_emulator_project.dir/flags.make
 
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp: ../resources.qrc
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp: CMakeFiles/can_emulator_project_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp: ../style.qss
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp: ../down.png
-can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp: /usr/lib/qt6/libexec/rcc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources.qrc"
-	/usr/bin/cmake -E cmake_autorcc /home/ameni/CAN_Emulator/build/CMakeFiles/can_emulator_project_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json 
-
 CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o: CMakeFiles/can_emulator_project.dir/flags.make
 CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o: can_emulator_project_autogen/mocs_compilation.cpp
 CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o: CMakeFiles/can_emulator_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o -MF CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o -c /home/ameni/CAN_Emulator/build/can_emulator_project_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator_Copy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o -MF CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o -c /home/ameni/CAN_Emulator_Copy/build/can_emulator_project_autogen/mocs_compilation.cpp
 
 CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator/build/can_emulator_project_autogen/mocs_compilation.cpp > CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator_Copy/build/can_emulator_project_autogen/mocs_compilation.cpp > CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator/build/can_emulator_project_autogen/mocs_compilation.cpp -o CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator_Copy/build/can_emulator_project_autogen/mocs_compilation.cpp -o CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/can_emulator_project.dir/main.cpp.o: CMakeFiles/can_emulator_project.dir/flags.make
 CMakeFiles/can_emulator_project.dir/main.cpp.o: ../main.cpp
 CMakeFiles/can_emulator_project.dir/main.cpp.o: CMakeFiles/can_emulator_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/can_emulator_project.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/main.cpp.o -MF CMakeFiles/can_emulator_project.dir/main.cpp.o.d -o CMakeFiles/can_emulator_project.dir/main.cpp.o -c /home/ameni/CAN_Emulator/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator_Copy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/can_emulator_project.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/main.cpp.o -MF CMakeFiles/can_emulator_project.dir/main.cpp.o.d -o CMakeFiles/can_emulator_project.dir/main.cpp.o -c /home/ameni/CAN_Emulator_Copy/main.cpp
 
 CMakeFiles/can_emulator_project.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/can_emulator_project.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator/main.cpp > CMakeFiles/can_emulator_project.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator_Copy/main.cpp > CMakeFiles/can_emulator_project.dir/main.cpp.i
 
 CMakeFiles/can_emulator_project.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/can_emulator_project.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator/main.cpp -o CMakeFiles/can_emulator_project.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator_Copy/main.cpp -o CMakeFiles/can_emulator_project.dir/main.cpp.s
 
 CMakeFiles/can_emulator_project.dir/homewindow.cpp.o: CMakeFiles/can_emulator_project.dir/flags.make
 CMakeFiles/can_emulator_project.dir/homewindow.cpp.o: ../homewindow.cpp
 CMakeFiles/can_emulator_project.dir/homewindow.cpp.o: CMakeFiles/can_emulator_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/can_emulator_project.dir/homewindow.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/homewindow.cpp.o -MF CMakeFiles/can_emulator_project.dir/homewindow.cpp.o.d -o CMakeFiles/can_emulator_project.dir/homewindow.cpp.o -c /home/ameni/CAN_Emulator/homewindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator_Copy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/can_emulator_project.dir/homewindow.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/homewindow.cpp.o -MF CMakeFiles/can_emulator_project.dir/homewindow.cpp.o.d -o CMakeFiles/can_emulator_project.dir/homewindow.cpp.o -c /home/ameni/CAN_Emulator_Copy/homewindow.cpp
 
 CMakeFiles/can_emulator_project.dir/homewindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/can_emulator_project.dir/homewindow.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator/homewindow.cpp > CMakeFiles/can_emulator_project.dir/homewindow.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator_Copy/homewindow.cpp > CMakeFiles/can_emulator_project.dir/homewindow.cpp.i
 
 CMakeFiles/can_emulator_project.dir/homewindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/can_emulator_project.dir/homewindow.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator/homewindow.cpp -o CMakeFiles/can_emulator_project.dir/homewindow.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator_Copy/homewindow.cpp -o CMakeFiles/can_emulator_project.dir/homewindow.cpp.s
 
 CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o: CMakeFiles/can_emulator_project.dir/flags.make
 CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o: ../mainwindow.cpp
 CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o: CMakeFiles/can_emulator_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o -MF CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o.d -o CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o -c /home/ameni/CAN_Emulator/mainwindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator_Copy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o -MF CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o.d -o CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o -c /home/ameni/CAN_Emulator_Copy/mainwindow.cpp
 
 CMakeFiles/can_emulator_project.dir/mainwindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/can_emulator_project.dir/mainwindow.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator/mainwindow.cpp > CMakeFiles/can_emulator_project.dir/mainwindow.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator_Copy/mainwindow.cpp > CMakeFiles/can_emulator_project.dir/mainwindow.cpp.i
 
 CMakeFiles/can_emulator_project.dir/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/can_emulator_project.dir/mainwindow.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator/mainwindow.cpp -o CMakeFiles/can_emulator_project.dir/mainwindow.cpp.s
-
-CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o: CMakeFiles/can_emulator_project.dir/flags.make
-CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o: can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp
-CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o: CMakeFiles/can_emulator_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o -MF CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o.d -o CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o -c /home/ameni/CAN_Emulator/build/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp
-
-CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ameni/CAN_Emulator/build/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp > CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.i
-
-CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator/build/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp -o CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ameni/CAN_Emulator_Copy/mainwindow.cpp -o CMakeFiles/can_emulator_project.dir/mainwindow.cpp.s
 
 # Object files for target can_emulator_project
 can_emulator_project_OBJECTS = \
 "CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/can_emulator_project.dir/main.cpp.o" \
 "CMakeFiles/can_emulator_project.dir/homewindow.cpp.o" \
-"CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o" \
-"CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o"
+"CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o"
 
 # External object files for target can_emulator_project
 can_emulator_project_EXTERNAL_OBJECTS =
@@ -162,16 +139,13 @@ can_emulator_project: CMakeFiles/can_emulator_project.dir/can_emulator_project_a
 can_emulator_project: CMakeFiles/can_emulator_project.dir/main.cpp.o
 can_emulator_project: CMakeFiles/can_emulator_project.dir/homewindow.cpp.o
 can_emulator_project: CMakeFiles/can_emulator_project.dir/mainwindow.cpp.o
-can_emulator_project: CMakeFiles/can_emulator_project.dir/can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp.o
 can_emulator_project: CMakeFiles/can_emulator_project.dir/build.make
-can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt6Widgets.so.6.2.4
-can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt6SerialPort.so.6.2.4
-can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt6Gui.so.6.2.4
-can_emulator_project: /usr/lib/x86_64-linux-gnu/libGLX.so
-can_emulator_project: /usr/lib/x86_64-linux-gnu/libOpenGL.so
-can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.2.4
+can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.15.3
+can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt5SerialPort.so.5.15.3
+can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.15.3
+can_emulator_project: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.3
 can_emulator_project: CMakeFiles/can_emulator_project.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ameni/CAN_Emulator/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable can_emulator_project"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ameni/CAN_Emulator_Copy/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable can_emulator_project"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/can_emulator_project.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -182,7 +156,7 @@ CMakeFiles/can_emulator_project.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/can_emulator_project.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/can_emulator_project.dir/clean
 
-CMakeFiles/can_emulator_project.dir/depend: can_emulator_project_autogen/EWIEGA46WW/qrc_resources.cpp
-	cd /home/ameni/CAN_Emulator/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ameni/CAN_Emulator /home/ameni/CAN_Emulator /home/ameni/CAN_Emulator/build /home/ameni/CAN_Emulator/build /home/ameni/CAN_Emulator/build/CMakeFiles/can_emulator_project.dir/DependInfo.cmake --color=$(COLOR)
+CMakeFiles/can_emulator_project.dir/depend:
+	cd /home/ameni/CAN_Emulator_Copy/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ameni/CAN_Emulator_Copy /home/ameni/CAN_Emulator_Copy /home/ameni/CAN_Emulator_Copy/build /home/ameni/CAN_Emulator_Copy/build /home/ameni/CAN_Emulator_Copy/build/CMakeFiles/can_emulator_project.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/can_emulator_project.dir/depend
 
